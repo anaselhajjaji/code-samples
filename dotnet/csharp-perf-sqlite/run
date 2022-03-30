@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+set -o xtrace
+
+export PATH="$PATH:$HOME/.dotnet/tools/"
+
+# Init database
+dotnet tool install --global dotnet-ef
+dotnet add package Microsoft.EntityFrameworkCore.Design
+dotnet ef migrations add InitialCreate
+dotnet ef database update
+
+# RUN
+dotnet run insert
+dotnet run query
+
+# DROP database
+dotnet ef database drop
