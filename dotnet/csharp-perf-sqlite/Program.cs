@@ -11,12 +11,17 @@ class Program
 
     private static async Task Main(string[] args)
     {
+        int limit = 0;
+        if (args.Length == 2) {
+            limit = int.Parse(args[1]);
+        }
+
         if (args[0].Equals("insert")) {
             await Insert();
         } else if (args[0].Equals("query")) {
-            await Query(false);
+            await Query(false, limit);
         } else if (args[0].Equals("print")) {
-            await Query(true);
+            await Query(true, limit);
         }
     }
 
@@ -54,15 +59,35 @@ class Program
         }
     }
 
-    private static async Task Query(bool print) {
+    private static async Task Query(bool print, int limit) {
         using (var db = new CarsContext())
         {
             // Read
-            Console.WriteLine("Querying for cars ordered by name");
+            Console.WriteLine($"Querying for cars ordered by name, limit {limit}");
             Stopwatch queryWatch = new Stopwatch();
             queryWatch.Start();
-            var cars = db.Cars
-                .OrderBy(c => c.MakeName);
+            
+            if (limit == 0) {
+                var cars = db.Cars
+                    .OrderBy(c => c.MakeName);
+                Console.WriteLine($"Count {cars.Count()}");
+
+                if (print) {
+                    foreach (var car in cars) {
+                        Console.WriteLine(car.MakeName);
+                    }
+                }
+            } else {
+                var cars = db.Cars
+                    .OrderBy(c => c.MakeName).Take(limit);
+                Console.WriteLine($"Count {cars.Count()}");
+
+                if (print) {
+                    foreach (var car in cars) {
+                        Console.WriteLine(car.MakeName);
+                    }
+                }
+            }
             queryWatch.Stop();
 
             // Get the elapsed time as a TimeSpan value.
@@ -73,12 +98,6 @@ class Program
                 ts.Hours, ts.Minutes, ts.Seconds,
                 ts.Milliseconds / 10);
             Console.WriteLine($"QUERY in {elapsedTime}");
-
-            if (print) {
-                foreach (var car in cars) {
-                    Console.WriteLine(car.MakeName);
-                }
-            }
         }
     }
 }
