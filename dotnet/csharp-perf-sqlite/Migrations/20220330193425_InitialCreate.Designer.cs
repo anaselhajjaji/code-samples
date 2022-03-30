@@ -11,7 +11,7 @@ using PerfSqlite;
 namespace csharp_perf_sqlite.Migrations
 {
     [DbContext(typeof(CarsContext))]
-    [Migration("20220330184301_InitialCreate")]
+    [Migration("20220330193425_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,8 @@ namespace csharp_perf_sqlite.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("CarId");
+
+                    b.HasIndex("MakeName");
 
                     b.ToTable("Cars");
                 });

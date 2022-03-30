@@ -35,6 +35,8 @@ namespace csharp_perf_sqlite.Migrations
 
                     b.HasKey("CarId");
 
+                    b.HasIndex("MakeName");
+
                     b.ToTable("Cars");
                 });
 #pragma warning restore 612, 618

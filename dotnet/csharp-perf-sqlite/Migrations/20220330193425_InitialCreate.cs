@@ -23,6 +23,11 @@ namespace csharp_perf_sqlite.Migrations
                 {
                     table.PrimaryKey("PK_Cars", x => x.CarId);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cars_MakeName",
+                table: "Cars",
+                column: "MakeName");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

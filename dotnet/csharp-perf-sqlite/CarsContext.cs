@@ -23,6 +23,7 @@ public class CarsContext : DbContext
         => options.UseSqlite($"Data Source={DbPath}");
 }
 
+[Index(nameof(MakeName))]
 public class Car
 {
     public int CarId { get; set; }
